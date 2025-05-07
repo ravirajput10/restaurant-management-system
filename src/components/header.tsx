@@ -1,7 +1,7 @@
 "use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Home,
   MenuIcon,
@@ -10,10 +10,10 @@ import {
   User,
   Bell,
   DollarSign,
-} from 'lucide-react';
-import { Container } from '@/components/ui/container';
-import { MobileMenu } from '@/components/mobile-menu';
-import { NavItem } from '@/components/nav-item';
+} from "lucide-react";
+import { Container } from "@/components/ui/container";
+import { MobileMenu } from "@/components/mobile-menu";
+import { NavItem } from "@/components/nav-item";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +21,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 export function Header() {
   return (
@@ -36,8 +36,17 @@ export function Header() {
             <nav className="hidden lg:flex gap-1">
               {/* <NavItem href="/" icon={Home} label="Home" /> */}
               <NavItem href="/menu" icon={MenuIcon} label="Menu" />
-              <NavItem href="/reservations" icon={CalendarRange} label="Reservations" />
-              <NavItem href="/orders" icon={ShoppingBag} label="My Orders" badge={3} />
+              <NavItem
+                href="/reservations"
+                icon={CalendarRange}
+                label="Reservations"
+              />
+              <NavItem
+                href="/orders"
+                icon={ShoppingBag}
+                label="My Orders"
+                badge={3}
+              />
               <NavItem href="/pricing" icon={DollarSign} label="Pricing" />
             </nav>
           </div>
@@ -60,10 +69,21 @@ export function Header() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>My Reservations</DropdownMenuItem>
-                  <DropdownMenuItem>Order History</DropdownMenuItem>
-                  <DropdownMenuItem className="text-destructive">Log out</DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/reservations">My Reservations</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/orders">My Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="text-destructive">
+                    <Link href="/logout">Log out</Link>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

@@ -14,6 +14,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
   useSidebar,
 } from "@/components/ui/sidebar";
 
@@ -34,7 +35,7 @@ export function NavMain({
   items: NavItem[];
 }) {
   const { setOpen } = useSidebar();
-  
+
   if (!items || items.length === 0) {
     return null; // Return null if no items
   }
@@ -55,30 +56,37 @@ export function NavMain({
                 <SidebarMenuButton
                   tooltip={item.title}
                   onClick={() => setOpen(true)}
-                  asChild
                 >
-                  <Link href={item.url}>
+                  {/* <div className="flex items-center flex-1"> */}
                     {item.icon && <item.icon className="size-4" />}
-                    <span>{item.title}</span>
+                    {/* If there are subitems, make the title a button */}
+                    {item.items ? (
+                      <span className="flex-1">{item.title}</span>
+                    ) : (
+                      // If no subitems, make the whole thing a link
+                      <Link href={item.url} className="flex-1">
+                        <span>{item.title}</span>
+                      </Link>
+                    )}
                     {item.items && (
                       <ChevronRight className="ml-auto size-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
                     )}
-                  </Link>
+                  {/* </div> */}
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               {item.items && (
-                <CollapsibleContent className="pt-2">
-                  <SidebarMenu>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
                     {item.items.map((subItem) => (
                       <SidebarMenuItem key={subItem.title}>
                         <SidebarMenuButton asChild>
-                          <Link href={subItem.url}>
+                          <Link href={subItem.url} className="flex-1">
                             <span>{subItem.title}</span>
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
-                  </SidebarMenu>
+                  </SidebarMenuSub>
                 </CollapsibleContent>
               )}
             </SidebarMenuItem>
