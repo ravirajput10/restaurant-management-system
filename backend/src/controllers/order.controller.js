@@ -1,11 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import Order from '../models/order.model';
-import { ApiError } from '../middleware/error';
+import Order from '../models/order.model.js';
+import { ApiError } from '../middleware/error.js';
 
 // @desc    Get all orders
 // @route   GET /api/orders
 // @access  Private
-export const getOrders = async (req: Request, res: Response, next: NextFunction) => {
+export const getOrders = async (req, res, next) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
     res.json(orders);
@@ -17,7 +16,7 @@ export const getOrders = async (req: Request, res: Response, next: NextFunction)
 // @desc    Get order by ID
 // @route   GET /api/orders/:id
 // @access  Private
-export const getOrderById = async (req: Request, res: Response, next: NextFunction) => {
+export const getOrderById = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
 
@@ -34,17 +33,17 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
 // @desc    Create a new order
 // @route   POST /api/orders
 // @access  Private
-export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
+export const createOrder = async (req, res, next) => {
   try {
     const { customerName, items, tableNumber, specialInstructions } = req.body;
 
     // Calculate total and subtotals
-    const processedItems = items.map((item: any) => ({
+    const processedItems = items.map((item) => ({
       ...item,
       subtotal: item.price * item.quantity,
     }));
 
-    const total = processedItems.reduce((sum: number, item: any) => sum + item.subtotal, 0);
+    const total = processedItems.reduce((sum, item) => sum + item.subtotal, 0);
 
     const order = await Order.create({
       customerName,
@@ -67,7 +66,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
 // @desc    Update order status
 // @route   PUT /api/orders/:id/status
 // @access  Private
-export const updateOrderStatus = async (req: Request, res: Response, next: NextFunction) => {
+export const updateOrderStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
 
@@ -95,7 +94,7 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
 // @desc    Update order
 // @route   PUT /api/orders/:id
 // @access  Private
-export const updateOrder = async (req: Request, res: Response, next: NextFunction) => {
+export const updateOrder = async (req, res, next) => {
   try {
     const { customerName, items, tableNumber, specialInstructions, status } = req.body;
 
@@ -107,12 +106,12 @@ export const updateOrder = async (req: Request, res: Response, next: NextFunctio
 
     // Calculate total and subtotals if items are provided
     if (items) {
-      const processedItems = items.map((item: any) => ({
+      const processedItems = items.map((item) => ({
         ...item,
         subtotal: item.price * item.quantity,
       }));
 
-      const total = processedItems.reduce((sum: number, item: any) => sum + item.subtotal, 0);
+      const total = processedItems.reduce((sum, item) => sum + item.subtotal, 0);
 
       order.items = processedItems;
       order.total = total;
@@ -137,7 +136,7 @@ export const updateOrder = async (req: Request, res: Response, next: NextFunctio
 // @desc    Delete order
 // @route   DELETE /api/orders/:id
 // @access  Private
-export const deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteOrder = async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id);
 

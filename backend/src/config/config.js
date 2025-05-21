@@ -1,22 +1,15 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory name for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-interface Config {
-  env: string;
-  port: number;
-  mongoUri: string;
-  jwtSecret: string;
-  jwtExpiresIn: string;
-  corsOrigin: string;
-  logLevel: string;
-  rateLimitWindowMs: number;
-  rateLimitMax: number;
-}
-
-const config: Config = {
+const config = {
   env: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '5000', 10),
   mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/restaurant-management',

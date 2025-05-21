@@ -1,11 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
-import logger from '../config/logger';
+import logger from '../config/logger.js';
 
 export class ApiError extends Error {
-  statusCode: number;
-  isOperational: boolean;
-
-  constructor(statusCode: number, message: string, isOperational = true, stack = '') {
+  constructor(statusCode, message, isOperational = true, stack = '') {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;
@@ -18,7 +14,7 @@ export class ApiError extends Error {
   }
 }
 
-export const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const errorConverter = (err, req, res, next) => {
   let error = err;
   
   if (!(error instanceof ApiError)) {
@@ -30,7 +26,7 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
   next(error);
 };
 
-export const errorHandler = (err: ApiError, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (err, req, res, next) => {
   const { statusCode, message } = err;
   
   res.locals.errorMessage = err.message;
@@ -48,7 +44,7 @@ export const errorHandler = (err: ApiError, req: Request, res: Response, next: N
   res.status(statusCode).json(response);
 };
 
-export const notFound = (req: Request, res: Response, next: NextFunction) => {
+export const notFound = (req, res, next) => {
   const error = new ApiError(404, `Not Found - ${req.originalUrl}`);
   next(error);
 };

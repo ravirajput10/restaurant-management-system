@@ -6,8 +6,8 @@ import {
   updateStaffStatus,
   updateStaff,
   deleteStaff,
-} from '../controllers/staff.controller';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/staff.controller.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

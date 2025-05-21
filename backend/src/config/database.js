@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import config from './config';
-import logger from './logger';
+import config from './config.js';
+import logger from './logger.js';
 
-const connectDB = async (): Promise<void> => {
+const connectDB = async () => {
   try {
     const conn = await mongoose.connect(config.mongoUri);
     logger.info(`MongoDB Connected: ${conn.connection.host}`);

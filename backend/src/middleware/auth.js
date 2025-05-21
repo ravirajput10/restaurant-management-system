@@ -1,25 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { ApiError } from './error';
-import config from '../config/config';
+import { ApiError } from './error.js';
+import config from '../config/config.js';
 
-interface JwtPayload {
-  id: string;
-  role: string;
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        id: string;
-        role: string;
-      };
-    }
-  }
-}
-
-export const protect = async (req: Request, res: Response, next: NextFunction) => {
+export const protect = async (req, res, next) => {
   let token;
 
   if (
@@ -31,7 +14,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload;
+      const decoded = jwt.verify(token, config.jwtSecret);
 
       // Add user to request
       req.user = {
@@ -50,8 +33,8 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-export const authorize = (...roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+export const authorize = (...roles) => {
+  return (req, res, next) => {
     if (!req.user) {
       return next(new ApiError(401, 'Not authorized, no user'));
     }

@@ -1,12 +1,9 @@
-import { Server as HttpServer } from 'http';
-import { Server, Socket } from 'socket.io';
-import logger from '../config/logger';
-import config from '../config/config';
+import { Server } from 'socket.io';
+import logger from '../config/logger.js';
+import config from '../config/config.js';
 
 export default class SocketService {
-  private io: Server;
-
-  constructor(server: HttpServer) {
+  constructor(server) {
     this.io = new Server(server, {
       cors: {
         origin: config.corsOrigin,
@@ -18,30 +15,30 @@ export default class SocketService {
     this.setupSocketEvents();
   }
 
-  private setupSocketEvents(): void {
-    this.io.on('connection', (socket: Socket) => {
+  setupSocketEvents() {
+    this.io.on('connection', (socket) => {
       logger.info(`New client connected: ${socket.id}`);
 
       // Join rooms based on client type
-      socket.on('joinRoom', (room: string) => {
+      socket.on('joinRoom', (room) => {
         socket.join(room);
         logger.info(`Client ${socket.id} joined room: ${room}`);
       });
 
       // Handle kitchen events
-      socket.on('orderStatusChange', (data: { orderId: string; status: string }) => {
+      socket.on('orderStatusChange', (data) => {
         this.io.emit('orderStatusUpdate', data);
         logger.info(`Order ${data.orderId} status changed to ${data.status}`);
       });
 
       // Handle reservation events
-      socket.on('reservationStatusChange', (data: { reservationId: string; status: string }) => {
+      socket.on('reservationStatusChange', (data) => {
         this.io.emit('reservationStatusUpdate', data);
         logger.info(`Reservation ${data.reservationId} status changed to ${data.status}`);
       });
 
       // Handle staff events
-      socket.on('staffStatusChange', (data: { staffId: string; status: string }) => {
+      socket.on('staffStatusChange', (data) => {
         this.io.emit('staffStatusUpdate', data);
         logger.info(`Staff ${data.staffId} status changed to ${data.status}`);
       });
@@ -53,7 +50,7 @@ export default class SocketService {
     });
   }
 
-  public getIO(): Server {
+  getIO() {
     return this.io;
   }
 }

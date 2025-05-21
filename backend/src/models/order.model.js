@@ -1,25 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface IOrderItem extends Document {
-  name: string;
-  quantity: number;
-  price: number;
-  subtotal: number;
-}
-
-export interface IOrder extends Document {
-  orderId: string;
-  customerName: string;
-  status: 'PENDING' | 'PREPARING' | 'READY' | 'DELIVERED' | 'CANCELLED';
-  items: IOrderItem[];
-  total: number;
-  tableNumber?: string;
-  specialInstructions?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const orderItemSchema = new Schema<IOrderItem>(
+const orderItemSchema = new Schema(
   {
     name: {
       type: String,
@@ -44,7 +25,7 @@ const orderItemSchema = new Schema<IOrderItem>(
   { _id: true }
 );
 
-const orderSchema = new Schema<IOrder>(
+const orderSchema = new Schema(
   {
     orderId: {
       type: String,
@@ -94,6 +75,6 @@ orderSchema.pre('save', async function (next) {
   next();
 });
 
-const Order = mongoose.model<IOrder>('Order', orderSchema);
+const Order = mongoose.model('Order', orderSchema);
 
 export default Order;

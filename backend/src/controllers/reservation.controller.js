@@ -1,11 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import Reservation from '../models/reservation.model';
-import { ApiError } from '../middleware/error';
+import Reservation from '../models/reservation.model.js';
+import { ApiError } from '../middleware/error.js';
 
 // @desc    Get all reservations
 // @route   GET /api/reservations
 // @access  Private
-export const getReservations = async (req: Request, res: Response, next: NextFunction) => {
+export const getReservations = async (req, res, next) => {
   try {
     const reservations = await Reservation.find().sort({ date: 1, time: 1 });
     res.json(reservations);
@@ -17,7 +16,7 @@ export const getReservations = async (req: Request, res: Response, next: NextFun
 // @desc    Get reservations by date
 // @route   GET /api/reservations/date/:date
 // @access  Private
-export const getReservationsByDate = async (req: Request, res: Response, next: NextFunction) => {
+export const getReservationsByDate = async (req, res, next) => {
   try {
     const dateStr = req.params.date;
     const date = new Date(dateStr);
@@ -42,7 +41,7 @@ export const getReservationsByDate = async (req: Request, res: Response, next: N
 // @desc    Get reservation by ID
 // @route   GET /api/reservations/:id
 // @access  Private
-export const getReservationById = async (req: Request, res: Response, next: NextFunction) => {
+export const getReservationById = async (req, res, next) => {
   try {
     const reservation = await Reservation.findById(req.params.id);
 
@@ -59,7 +58,7 @@ export const getReservationById = async (req: Request, res: Response, next: Next
 // @desc    Create a new reservation
 // @route   POST /api/reservations
 // @access  Private
-export const createReservation = async (req: Request, res: Response, next: NextFunction) => {
+export const createReservation = async (req, res, next) => {
   try {
     const {
       customerName,
@@ -96,7 +95,7 @@ export const createReservation = async (req: Request, res: Response, next: NextF
 // @desc    Update reservation status
 // @route   PUT /api/reservations/:id/status
 // @access  Private
-export const updateReservationStatus = async (req: Request, res: Response, next: NextFunction) => {
+export const updateReservationStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
 
@@ -124,7 +123,7 @@ export const updateReservationStatus = async (req: Request, res: Response, next:
 // @desc    Update reservation
 // @route   PUT /api/reservations/:id
 // @access  Private
-export const updateReservation = async (req: Request, res: Response, next: NextFunction) => {
+export const updateReservation = async (req, res, next) => {
   try {
     const {
       customerName,
@@ -168,7 +167,7 @@ export const updateReservation = async (req: Request, res: Response, next: NextF
 // @desc    Delete reservation
 // @route   DELETE /api/reservations/:id
 // @access  Private
-export const deleteReservation = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteReservation = async (req, res, next) => {
   try {
     const reservation = await Reservation.findById(req.params.id);
 

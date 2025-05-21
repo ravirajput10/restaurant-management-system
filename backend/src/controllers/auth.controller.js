@@ -1,11 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import User from '../models/user.model';
-import { ApiError } from '../middleware/error';
-import config from '../config/config';
+import jwt from "jsonwebtoken";
+import User from "../models/user.model.js";
+import { ApiError } from "../middleware/error.js";
+import config from "../config/config.js";
 
 // Generate JWT
-const generateToken = (id: string, role: string) => {
+const generateToken = (id, role) => {
+  if (!config.jwtSecret) {
+    throw new Error("JWT secret is not defined");
+  }
   return jwt.sign({ id, role }, config.jwtSecret, {
     expiresIn: config.jwtExpiresIn,
   });
@@ -14,7 +16,7 @@ const generateToken = (id: string, role: string) => {
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
-export const register = async (req: Request, res: Response, next: NextFunction) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
 
@@ -22,7 +24,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return next(new ApiError(400, 'User already exists'));
+      return next(new ApiError(400, "User already exists"));
     }
 
     // Create user
@@ -30,7 +32,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       name,
       email,
       password,
-      role: role || 'user',
+      role: role || "user",
     });
 
     if (user) {
@@ -42,7 +44,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         token: generateToken(user._id.toString(), user.role),
       });
     } else {
-      return next(new ApiError(400, 'Invalid user data'));
+      return next(new ApiError(400, "Invalid user data"));
     }
   } catch (error) {
     next(error);
@@ -52,22 +54,22 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 // @desc    Authenticate a user
 // @route   POST /api/auth/login
 // @access  Public
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     // Check for user email
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return next(new ApiError(401, 'Invalid credentials'));
+      return next(new ApiError(401, "Invalid credentials"));
     }
 
     // Check if password matches
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      return next(new ApiError(401, 'Invalid credentials'));
+      return next(new ApiError(401, "Invalid credentials"));
     }
 
     res.json({
@@ -85,16 +87,16 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private
-export const getMe = async (req: Request, res: Response, next: NextFunction) => {
+export const getMe = async (req, res, next) => {
   try {
     if (!req.user) {
-      return next(new ApiError(401, 'Not authorized'));
+      return next(new ApiError(401, "Not authorized"));
     }
 
     const user = await User.findById(req.user.id);
 
     if (!user) {
-      return next(new ApiError(404, 'User not found'));
+      return next(new ApiError(404, "User not found"));
     }
 
     res.json({

@@ -6,8 +6,8 @@ import {
   updateOrderStatus,
   updateOrder,
   deleteOrder,
-} from '../controllers/order.controller';
-import { protect, authorize } from '../middleware/auth';
+} from '../controllers/order.controller.js';
+import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();
 

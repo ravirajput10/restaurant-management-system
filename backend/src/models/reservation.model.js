@@ -1,20 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface IReservation extends Document {
-  customerName: string;
-  date: Date;
-  time: string;
-  guests: number;
-  status: 'CONFIRMED' | 'PENDING' | 'CANCELLED';
-  tableNumber: string;
-  specialRequests?: string;
-  contactPhone: string;
-  contactEmail?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const reservationSchema = new Schema<IReservation>(
+const reservationSchema = new Schema(
   {
     customerName: {
       type: String,
@@ -66,6 +52,6 @@ const reservationSchema = new Schema<IReservation>(
 // Create index for efficient querying by date
 reservationSchema.index({ date: 1, status: 1 });
 
-const Reservation = mongoose.model<IReservation>('Reservation', reservationSchema);
+const Reservation = mongoose.model('Reservation', reservationSchema);
 
 export default Reservation;

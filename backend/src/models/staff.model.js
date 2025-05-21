@@ -1,20 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-export interface IStaff extends Document {
-  name: string;
-  role: string;
-  email: string;
-  phone: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'ON_LEAVE';
-  joinDate: Date;
-  department: string;
-  position: string;
-  userId?: mongoose.Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const staffSchema = new Schema<IStaff>(
+const staffSchema = new Schema(
   {
     name: {
       type: String,
@@ -44,7 +30,7 @@ const staffSchema = new Schema<IStaff>(
     },
     joinDate: {
       type: Date,
-      required: [true, 'Please provide join date'],
+      default: Date.now,
     },
     department: {
       type: String,
@@ -64,9 +50,6 @@ const staffSchema = new Schema<IStaff>(
   }
 );
 
-// Create index for efficient querying by department and status
-staffSchema.index({ department: 1, status: 1 });
-
-const Staff = mongoose.model<IStaff>('Staff', staffSchema);
+const Staff = mongoose.model('Staff', staffSchema);
 
 export default Staff;

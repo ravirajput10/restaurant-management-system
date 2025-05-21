@@ -1,13 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
-import Staff from '../models/staff.model';
-import User from '../models/user.model';
-import { ApiError } from '../middleware/error';
+import Staff from '../models/staff.model.js';
+import User from '../models/user.model.js';
+import { ApiError } from '../middleware/error.js';
 import mongoose from 'mongoose';
 
 // @desc    Get all staff
 // @route   GET /api/staff
 // @access  Private
-export const getAllStaff = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllStaff = async (req, res, next) => {
   try {
     const staff = await Staff.find().sort({ name: 1 });
     res.json(staff);
@@ -19,7 +18,7 @@ export const getAllStaff = async (req: Request, res: Response, next: NextFunctio
 // @desc    Get staff by ID
 // @route   GET /api/staff/:id
 // @access  Private
-export const getStaffById = async (req: Request, res: Response, next: NextFunction) => {
+export const getStaffById = async (req, res, next) => {
   try {
     const staff = await Staff.findById(req.params.id);
 
@@ -36,7 +35,7 @@ export const getStaffById = async (req: Request, res: Response, next: NextFuncti
 // @desc    Create a new staff member
 // @route   POST /api/staff
 // @access  Private
-export const createStaff = async (req: Request, res: Response, next: NextFunction) => {
+export const createStaff = async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -110,7 +109,7 @@ export const createStaff = async (req: Request, res: Response, next: NextFunctio
 // @desc    Update staff status
 // @route   PUT /api/staff/:id/status
 // @access  Private
-export const updateStaffStatus = async (req: Request, res: Response, next: NextFunction) => {
+export const updateStaffStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
 
@@ -139,7 +138,7 @@ export const updateStaffStatus = async (req: Request, res: Response, next: NextF
 // @desc    Update staff
 // @route   PUT /api/staff/:id
 // @access  Private
-export const updateStaff = async (req: Request, res: Response, next: NextFunction) => {
+export const updateStaff = async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -177,7 +176,7 @@ export const updateStaff = async (req: Request, res: Response, next: NextFunctio
 
     // If staff has a user account, update user information
     if (staff.userId) {
-      const updateData: any = {};
+      const updateData = {};
       if (name) updateData.name = name;
       if (email) updateData.email = email;
       if (status) updateData.isActive = status === 'ACTIVE';
@@ -199,7 +198,7 @@ export const updateStaff = async (req: Request, res: Response, next: NextFunctio
 // @desc    Delete staff
 // @route   DELETE /api/staff/:id
 // @access  Private
-export const deleteStaff = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteStaff = async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
