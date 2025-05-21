@@ -69,7 +69,7 @@ export function NavMain({
                       </Link>
                     )}
                     {item.items && (
-                      <ChevronRight className="ml-auto size-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                     )}
                   {/* </div> */}
                 </SidebarMenuButton>

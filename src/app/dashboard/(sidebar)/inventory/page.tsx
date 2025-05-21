@@ -25,14 +25,14 @@ import { ItemFormModal } from "@/components/dashboard/inventory/item-form-modal"
 export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
 
   const handleAddItem = () => {
     setSelectedItem(null);
     setIsModalOpen(true);
   };
 
-  const handleEditItem = (item) => {
+  const handleEditItem = (item: any) => {
     setSelectedItem(item);
     setIsModalOpen(true);
   };
