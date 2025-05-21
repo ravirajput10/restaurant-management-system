@@ -7,7 +7,7 @@ import {
   updateReservationStatus,
   updateReservation,
   deleteReservation,
-} from '../controllers/reservation.controller.js';
+} from '../controllers/reservationController.js';
 import { protect, authorize } from '../middleware/auth.js';
 
 const router = express.Router();

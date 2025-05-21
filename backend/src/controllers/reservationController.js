@@ -1,4 +1,4 @@
-import Reservation from '../models/reservation.model.js';
+import Reservation from '../models/reservationModel.js';
 import { ApiError } from '../middleware/error.js';
 
 // @desc    Get all reservations

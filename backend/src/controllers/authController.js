@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
+import User from "../models/userModel.js";
 import { ApiError } from "../middleware/error.js";
 import config from "../config/config.js";
 
@@ -37,6 +37,7 @@ export const register = async (req, res, next) => {
 
     if (user) {
       res.status(201).json({
+        message: "User created successfully",
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -73,12 +74,35 @@ export const login = async (req, res, next) => {
     }
 
     res.json({
+      message: "User logged in successfully",
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
       token: generateToken(user._id.toString(), user.role),
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Logout user / clear cookie
+// @route   POST /api/auth/logout
+// @access  Private
+export const logout = async (req, res, next) => {
+  try {
+    // Get token from header
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(200).json({ message: 'Logged out successfully' });
+    }
+    
+    // In a production environment, you might want to add the token to a blacklist
+    // This would require Redis or another fast storage solution
+    // Example: await redisClient.set(`bl_${token}`, token, 'EX', tokenRemainingTTL);
+    
+    res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     next(error);
   }

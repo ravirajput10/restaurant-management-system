@@ -1,27 +1,27 @@
-import express from 'express';
+import express, { Express } from 'express';
 import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
-import connectDB from './config/database.js';
-import config from './config/config.js';
-import logger from './config/logger.js';
-import SocketService from './services/socket-service.js';
-import { errorConverter, errorHandler, notFound } from './middleware/error.js';
+import connectDB from './config/database';
+import config from './config/config';
+import logger from './config/logger';
+import SocketService from './services/socket-service';
+import { errorConverter, errorHandler, notFound } from './middleware/error';
 
 // Routes
-import authRoutes from './routes/authRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import reservationRoutes from './routes/reservationRoutes.js';
-import staffRoutes from './routes/staffRoutes.js';
+import authRoutes from './routes/authRoutes';
+import orderRoutes from './routes/orderRoutes';
+import reservationRoutes from './routes/reservationRoutes';
+import staffRoutes from './routes/staffRoutes';
 
 // Connect to MongoDB
 connectDB();
 
 // Initialize Express
-const app = express();
+const app: Express = express();
 const server = http.createServer(app);
 
 // Initialize Socket.io
@@ -75,7 +75,7 @@ server.listen(PORT, () => {
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err) => {
+process.on('unhandledRejection', (err: Error) => {
   logger.error(`Unhandled Rejection: ${err.message}`);
   // Close server & exit process
   server.close(() => process.exit(1));
