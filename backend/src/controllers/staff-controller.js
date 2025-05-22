@@ -1,5 +1,5 @@
-import Staff from '../models/staffModel.js';
-import User from '../models/userModel.js';
+import Staff from '../models/staff.js';
+import User from '../models/user.js';
 import { ApiError } from '../middleware/error.js';
 import mongoose from 'mongoose';
 

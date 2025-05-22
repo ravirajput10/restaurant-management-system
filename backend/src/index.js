@@ -12,10 +12,10 @@ import SocketService from './services/socket-service.js';
 import { errorConverter, errorHandler, notFound } from './middleware/error.js';
 
 // Routes
-import authRoutes from './routes/authRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import reservationRoutes from './routes/reservationRoutes.js';
-import staffRoutes from './routes/staffRoutes.js';
+import authRoutes from './routes/auth-routes.js';
+import orderRoutes from './routes/order-routes.js';
+import reservationRoutes from './routes/reservation-routes.js';
+import staffRoutes from './routes/staff-routes.js';
 
 // Connect to MongoDB
 connectDB();

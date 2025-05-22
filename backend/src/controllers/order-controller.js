@@ -1,4 +1,4 @@
-import Order from '../models/orderModel.js';
+import Order from '../models/order.js';
 import { ApiError } from '../middleware/error.js';
 
 // @desc    Get all orders
