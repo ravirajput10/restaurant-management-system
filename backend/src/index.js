@@ -16,6 +16,7 @@ import authRoutes from './routes/auth-routes.js';
 import orderRoutes from './routes/order-routes.js';
 import reservationRoutes from './routes/reservation-routes.js';
 import staffRoutes from './routes/staff-routes.js';
+import userRoutes from './routes/user-routes.js';
 
 // Connect to MongoDB
 connectDB();
@@ -31,11 +32,40 @@ app.set('io', socketService.getIO());
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Limit request body size
+// app.use(express.json({ limit: '10kb' }));
+// app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
 app.use(cors({
   origin: config.corsOrigin,
   credentials: true,
 }));
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:"],
+      connectSrc: ["'self'"],
+      frameSrc: ["'none'"],
+      objectSrc: ["'none'"]
+    }
+  },
+  crossOriginEmbedderPolicy: true,
+  crossOriginOpenerPolicy: true,
+  crossOriginResourcePolicy: { policy: "same-site" },
+  dnsPrefetchControl: { allow: false },
+  frameguard: { action: "deny" },
+  hsts: { maxAge: 15552000, includeSubDomains: true },
+  referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+  xssFilter: true,
+  noSniff: true
+}));
+
+// Disable X-Powered-By header
+app.disable('x-powered-by');
 app.use(compression());
 
 // Logging
@@ -54,6 +84,7 @@ app.use('/api', limiter);
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/reservations', reservationRoutes);
 app.use('/api/staff', staffRoutes);
@@ -82,3 +113,5 @@ process.on('unhandledRejection', (err) => {
 });
 
 export default app;
+
+
