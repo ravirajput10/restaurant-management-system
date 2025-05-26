@@ -49,10 +49,18 @@ export const register = async (req, res, next) => {
 // @access  Public
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // Check for user email
-    const user = await User.findOne({ email }).select("+password");
+    const query = { email };
+    
+    // If role is provided, add it to the query
+    if (role) {
+      query.role = role;
+    }
+    
+    // Check for user with matching email and role (if provided)
+    const user = await User.findOne(query).select("+password");
 
     if (!user) {
       return next(new ApiError(401, "Invalid credentials"));
@@ -217,3 +225,4 @@ export const refreshToken = async (req, res, next) => {
     next(error);
   }
 };
+
