@@ -54,10 +54,12 @@ export function MobileMenu() {
               <Clock className="h-5 w-5 mr-2" />
               Order History
             </Button>
+            <Link href="/login"> 
             <Button variant="ghost" size="sm" className="justify-start text-destructive">
               <LogOut className="h-5 w-5 mr-2" />
               Log out
             </Button>
+            </Link>
           </div>
         </div>
       </SheetContent>

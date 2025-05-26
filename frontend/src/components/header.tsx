@@ -82,7 +82,7 @@ export function Header() {
                     <Link href="/orders">My Orders</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild className="text-destructive">
-                    <Link href="/logout">Log out</Link>
+                    <Link href="/login">Log out</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
